@@ -1,0 +1,58 @@
+# SDLC Lab — Календар подій (додавання подій з датою й нагадуваннями)
+
+## 1. Планування
+Мета продукту: Користувач повинен мати можливість створювати події з датою/часом та отримувати нагадування, щоб не пропускати важливі справи.
+
+## 2. Аналіз вимог (User Stories)
+1) Як користувач, я хочу додавати нову подію (назва, дата, час), щоб запланувати справу в календарі. ✅ Must have  
+2) Як користувач, я хочу встановлювати нагадування для події (за 5/15/60 хв або за день), щоб вчасно отримати сповіщення. ✅ Must have  
+3) Як користувач, я хочу переглядати список подій на вибрану дату, щоб бачити план на день.  
+4) Як користувач, я хочу редагувати подію, щоб змінити час/назву/нагадування, якщо плани змінилися.  
+5) Як користувач, я хочу видаляти подію, щоб прибрати неактуальні плани.
+
+Must have:
+- Story 1 (Додавання події)
+- Story 2 (Нагадування)
+
+## 3. Дизайн (прототип)
+Прототип інтерфейсу (2 екрани):
+![Prototype](prototype.png)
+
+Опис екранів:
+- Екран 1: Головна сторінка — календар + список подій на вибрану дату.
+- Екран 2: Додавання події — форма (назва, дата, час, нагадування) + кнопка “Зберегти”.
+
+## 4. Реалізація (імітація)
+Ключова функція: Додавання події з нагадуванням.
+
+Псевдокод:
+```text
+function addEvent(title, date, time, reminderOption):
+    if title is empty:
+        return error("Назва події обов’язкова")
+
+    if date is invalid OR time is invalid:
+        return error("Некоректна дата або час")
+
+    eventDateTime = combine(date, time)
+
+    if eventDateTime < now():
+        return error("Не можна створити подію в минулому")
+
+    eventId = generateUniqueId()
+
+    event = {
+        id: eventId,
+        title: title,
+        datetime: eventDateTime,
+        reminder: reminderOption
+    }
+
+    save event to storage/database
+
+    if reminderOption is not "none":
+        reminderTime = eventDateTime - reminderOption
+        scheduleNotification(eventId, reminderTime)
+
+    update UI (event list for selected date)
+    return success(event)
